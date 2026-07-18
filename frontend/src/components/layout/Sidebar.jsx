@@ -6,9 +6,6 @@ const menu = [
   { label: 'AI', items: [
     { to: '/admin/ai', icon: Sparkles, label: 'AI Assistant' },
   ]},
-  { label: 'APPROVAL', items: [
-    { to: '/admin/approvals', icon: CheckCircle, label: 'Approval Berjenjang' },
-  ]},
   { label: 'DASHBOARD', items: [
     { to: '/admin', icon: LayoutDashboard, label: 'Dashboard Utama', end: true },
   ]},
@@ -91,6 +88,9 @@ export default function Sidebar({ onClose }) {
         </NavLink>
         <NavLink to="/command" className={({ isActive }) => `flex items-center gap-2 px-3 py-2 rounded-xl text-xs transition-colors ${isActive ? 'bg-white/10 text-white' : 'text-white/30 hover:text-white/60'}`}>
           <Command size={13} /> {!collapsed && 'Command Center'}
+        </NavLink>
+        <NavLink to="/approvals" className={({ isActive }) => `flex items-center gap-2 px-3 py-2 rounded-xl text-xs transition-colors ${isActive ? 'bg-white/10 text-white' : 'text-white/30 hover:text-white/60'}`}>
+          <CheckCircle size={13} /> {!collapsed && 'Approval'}
         </NavLink>
       </div>
     </aside>

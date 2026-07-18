@@ -22,6 +22,7 @@ import UsersPage from './pages/admin/UsersPage';
 import PresensiPage from './pages/admin/PresensiPage';
 import AiAssistantPage from './pages/admin/AiAssistantPage';
 import ReceptionPage from './pages/admin/ReceptionPage';
+import ApprovalsStandalone from './pages/approvals/ApprovalsStandalone';
 import DashboardPortal from './pages/dashboard/DashboardPortal';
 import CommandCenter from './pages/command/CommandCenter';
 import PublicPortal from './pages/public/PublicPortal';
@@ -60,6 +61,7 @@ export default function App() {
             <Route path="ai" element={<AiAssistantPage />} />
             <Route path="reception" element={<ReceptionPage />} />          </Route>
           <Route path="/dashboard" element={<ProtectedRoute><DashboardPortal /></ProtectedRoute>} />
+          <Route path="/approvals" element={<ProtectedRoute><ApprovalsStandalone /></ProtectedRoute>} />
           <Route path="/command" element={<ProtectedRoute><CommandCenter /></ProtectedRoute>} />
           <Route path="/public" element={<PublicPortal />} />
           <Route path="*" element={<Navigate to="/admin" />} />
