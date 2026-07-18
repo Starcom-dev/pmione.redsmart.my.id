@@ -38,7 +38,7 @@ export default function AdminDashboard() {
   if (loading) return <div className="flex items-center justify-center py-32"><div className="w-6 h-6 border-2 border-red-500 border-t-transparent rounded-full animate-spin" /></div>;
 
   return (
-    <div className="max-w-6xl">
+    <div className="max-w-5xl">
       {/* Welcome */}
       <div className="mb-10">
         <h1 className="text-[32px] font-extrabold text-gray-900 tracking-tight leading-tight">

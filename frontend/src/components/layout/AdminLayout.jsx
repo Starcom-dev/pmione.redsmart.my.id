@@ -25,7 +25,7 @@ export default function AdminLayout() {
       {/* Main content */}
       <div className="flex-1 flex flex-col min-w-0">
         <Header onMenuClick={() => setSidebarOpen(!sidebarOpen)} />
-        <main className="flex-1 p-4 md:p-6"><Outlet /></main>
+        <main className="flex-1 py-4 px-6 md:py-6 md:px-10"><Outlet /></main>
       </div>
     </div>
   );
