@@ -20,27 +20,32 @@ export class ArchivesController {
     return { success: true, ...(await this.service.findAll(+page, +limit, search, category)) };
   }
 
+  @Public()
   @Get('stats')
   async stats() {
     return { success: true, data: await this.service.getStats() };
   }
 
+  @Public()
   @Get('tags')
   async tags() {
     return { success: true, data: await this.service.getTagCloud() };
   }
 
+  @Public()
   @Get('timeline')
   async timeline(@Query('year') year?: string) {
     return { success: true, data: await this.service.getTimeline(year ? +year : undefined) };
   }
 
+  @Public()
   @Get('ai-search')
   async aiSearch(@Query('q') q: string, @Query('page') page = 1, @Query('limit') limit = 10) {
     if (!q) return { success: true, data: [] };
     return { success: true, ...(await this.service.aiSearch(q, +page, +limit)) };
   }
 
+  @Public()
   @Get('ai-suggest')
   async aiSuggest(@Query('q') q: string) {
     return { success: true, data: await this.service.aiSuggest(q || '') };
