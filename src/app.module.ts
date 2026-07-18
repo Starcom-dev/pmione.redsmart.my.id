@@ -27,6 +27,7 @@ import { MouModule } from './modules/mou/mou.module';
 import { CommandCenterModule } from './modules/command-center/command-center.module';
 import { TteModule } from './modules/tte/tte.module';
 import { ApprovalsModule } from './modules/approvals/approvals.module';
+import { PresensiModule } from './modules/presensi/presensi.module';
 import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
 
 @Module({
@@ -65,6 +66,7 @@ import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
     CommandCenterModule,
     TteModule,
     ApprovalsModule,
+    PresensiModule,
   ],
   providers: [{ provide: APP_GUARD, useClass: JwtAuthGuard }],
 })
