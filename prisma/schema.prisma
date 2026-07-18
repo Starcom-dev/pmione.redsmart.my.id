@@ -35,6 +35,8 @@ model User {
   sentLetters    Letter[]        @relation("LetterSender")
   situationReports SituationReport[]
   trainingParticipants TrainingParticipant[]
+  approvalRequests ApprovalRequest[]
+  approvalSteps    ApprovalStep[]
 
   @@map("users")
 }
@@ -822,6 +824,79 @@ model Mou {
   updatedAt     DateTime @updatedAt
 
   @@map("mous")
+}
+
+// ============================================================================
+// APPROVAL WORKFLOW — Berjenjang PMI DKI Jakarta
+// ============================================================================
+
+enum ApprovalStatus {
+  WAITING
+  REVIEWED
+  APPROVED
+  REJECTED
+  REVISED
+}
+
+enum ApprovalRequestStatus {
+  IN_PROGRESS
+  APPROVED
+  REJECTED
+}
+
+model ApprovalRequest {
+  id          String              @id @default(uuid())
+  title       String
+  type        String
+  referenceId String?
+  description String?
+  status      ApprovalRequestStatus @default(IN_PROGRESS)
+  currentStep Int                 @default(1)
+  totalSteps  Int                 @default(1)
+  letterId    String?
+  createdById String
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
+
+  steps       ApprovalStep[]
+  createdBy   User                @relation(fields: [createdById], references: [id])
+
+  @@index([status, createdAt])
+  @@map("approval_requests")
+}
+
+model ApprovalStep {
+  id        String         @id @default(uuid())
+  requestId String
+  stepOrder Int
+  level     String
+  roleName  String
+  userId    String
+  status    ApprovalStatus @default(WAITING)
+  notes     String?
+  reviewedAt DateTime?
+  signedAt  DateTime?
+  signatureData String?
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+
+  request   ApprovalRequest @relation(fields: [requestId], references: [id], onDelete: Cascade)
+  user      User            @relation(fields: [userId], references: [id])
+
+  @@unique([requestId, stepOrder])
+  @@index([userId, status])
+  @@map("approval_steps")
+}
+
+model ApprovalTemplate {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  type      String
+  steps     Json
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+
+  @@map("approval_templates")
 }
 
 // ============================================================================
