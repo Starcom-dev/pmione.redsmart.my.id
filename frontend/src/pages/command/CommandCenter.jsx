@@ -39,7 +39,7 @@ export default function CommandCenter() {
       <main className="p-6 grid grid-cols-1 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
         <div className="lg:col-span-2 space-y-6">
           <div className="bg-[#111827] border border-white/5 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-4"><MapPin size={16} className="text-red-500" /><h2 className="font-semibold">Peta Operasi - Jakarta</h2></div>
+            <div className="flex items-center gap-2 mb-4"><MapPin size={16} className="text-red-500" /><h2 className="font-semibold">Peta Operasi    '                     '                            '                 ...     '                   '                     '                   '                 '                ...              '                   '                 ...     '                   '                     '                   '                 '                               '                   '                 ...     '                 Jakarta</h2></div>
             <div className="bg-[#0a0f1e] rounded-lg h-80 flex items-center justify-center border border-white/5">
               <p className="text-white/30 text-sm">Peta interaktif akan diintegrasikan (Leaflet/Mapbox)</p>
             </div>

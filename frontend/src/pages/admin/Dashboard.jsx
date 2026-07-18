@@ -1,69 +1,86 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import api from '../../api/client';
-import { FileText, Users, Briefcase, Heart, AlertTriangle, Warehouse, Calendar, TrendingUp } from 'lucide-react';
+import { FileText, Users, Heart, AlertTriangle, Warehouse, Droplets, ArrowUpRight } from 'lucide-react';
+import { useAuth } from '../../auth/AuthContext';
 
 export default function AdminDashboard() {
+  const { user } = useAuth();
   const [stats, setStats] = useState({});
+  const [recent, setRecent] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchStats = async () => {
-      const endpoints = ['letters', 'employees', 'finance', 'volunteers', 'emergency', 'warehouse'];
-      const results = {};
-      for (const ep of endpoints) {
-        try {
-          const { data } = await api.get(`/${ep}?limit=1`);
-          results[ep] = data.total || 0;
-        } catch { results[ep] = 0; }
-      }
-      setStats(results);
-    };
-    fetchStats();
+    (async () => {
+      try {
+        const eps = ['letters','employees','volunteers','emergency','warehouse','donations'];
+        const results = {};
+        for (const ep of eps) {
+          try { const { data } = await api.get(`/${ep}?limit=1`); results[ep] = data.total || 0; } catch { results[ep] = 0; }
+        }
+        setStats(results);
+        const { data: lData } = await api.get('/letters?limit=6');
+        setRecent(lData.data || []);
+      } catch (e) { console.error(e); }
+      setLoading(false);
+    })();
   }, []);
 
   const cards = [
-    { label: 'Surat', value: stats.letters, icon: FileText, color: 'bg-blue-500', link: '/admin/letters' },
-    { label: 'Pegawai', value: stats.employees, icon: Users, color: 'bg-green-500', link: '/admin/employees' },
-    { label: 'Transaksi Keuangan', value: stats.finance, icon: Briefcase, color: 'bg-purple-500', link: '/admin/finance' },
-    { label: 'Relawan', value: stats.volunteers, icon: Heart, color: 'bg-pink-500', link: '/admin/volunteers' },
-    { label: 'Posko Darurat', value: stats.emergency, icon: AlertTriangle, color: 'bg-orange-500', link: '/admin/emergency' },
-    { label: 'Gudang', value: stats.warehouse, icon: Warehouse, color: 'bg-indigo-500', link: '/admin/warehouse' },
+    { label: 'Surat', value: stats.letters, icon: FileText, color: 'text-blue-600', link: '/admin/letters' },
+    { label: 'Pegawai', value: stats.employees, icon: Users, color: 'text-emerald-600', link: '/admin/employees' },
+    { label: 'Relawan', value: stats.volunteers, icon: Heart, color: 'text-pink-600', link: '/admin/volunteers' },
+    { label: 'Posko', value: stats.emergency, icon: AlertTriangle, color: 'text-amber-600', link: '/admin/emergency' },
+    { label: 'Gudang', value: stats.warehouse, icon: Warehouse, color: 'text-violet-600', link: '/admin/warehouse' },
+    { label: 'Donasi', value: stats.donations, icon: Droplets, color: 'text-red-600', link: '/admin/donations' },
   ];
+
+  if (loading) return <div className="flex items-center justify-center py-32"><div className="w-6 h-6 border-2 border-red-500 border-t-transparent rounded-full animate-spin" /></div>;
 
   return (
     <div>
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold text-gray-800">Dashboard</h1>
-        <p className="text-gray-500 text-sm mt-1">Selamat datang di PMI One - PMI DKI Jakarta</p>
+      {/* Welcome */}
+      <div className="mb-10">
+        <h1 className="text-[32px] font-extrabold text-gray-900 tracking-tight leading-tight">
+          Selamat datang,<br /><span className="text-red-600">{user?.fullName}</span>
+        </h1>
+        <p className="text-gray-400 mt-2 text-lg">PMI DKI Jakarta</p>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
-        {cards.map((card, i) => (
-          <a key={i} href={card.link} className="bg-white rounded-xl shadow-sm border p-5 hover:shadow-md transition-shadow">
-            <div className="flex items-start justify-between">
-              <div>
-                <p className="text-sm text-gray-500">{card.label}</p>
-                <p className="text-3xl font-bold text-gray-800 mt-1">{card.value ?? '...'}</p>
-              </div>
-              <div className={`w-10 h-10 ${card.color} rounded-lg flex items-center justify-center`}>
-                <card.icon size={20} className="text-white" />
-              </div>
+
+      {/* Stats — minimal number cards */}
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-12">
+        {cards.map((c, i) => (
+          <Link key={i} to={c.link} className="group">
+            <div className="flex items-center gap-3 mb-2">
+              <c.icon size={20} className={c.color} />
+              <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">{c.label}</span>
             </div>
-          </a>
+            <p className="text-4xl font-extrabold text-gray-900 tracking-tight">{c.value ?? '-'}</p>
+          </Link>
         ))}
       </div>
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-white rounded-xl shadow-sm border p-6">
-          <div className="flex items-center gap-2 mb-4">
-            <TrendingUp size={18} className="text-red-600" />
-            <h3 className="font-semibold text-gray-800">Aktivitas Terbaru</h3>
-          </div>
-          <p className="text-gray-400 text-sm">Modul audit log akan ditampilkan di sini</p>
-        </div>
-        <div className="bg-white rounded-xl shadow-sm border p-6">
-          <div className="flex items-center gap-2 mb-4">
-            <Calendar size={18} className="text-red-600" />
-            <h3 className="font-semibold text-gray-800">Agenda Mendatang</h3>
-          </div>
-          <p className="text-gray-400 text-sm">Jadwal rapat & event terdekat</p>
+
+      {/* Recent Activity */}
+      <div className="mb-2">
+        <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4">Aktivitas Terbaru</h3>
+        <div>
+          {recent.slice(0, 5).map((r, i) => (
+            <Link key={i} to="/admin/letters"
+              className="flex items-center justify-between py-3 hover:bg-gray-50 -mx-2 px-2 rounded-lg transition-colors group">
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-semibold text-gray-900 truncate">{r.subject}</p>
+                <p className="text-xs text-gray-400 mt-0.5">{r.letterNumber} · {r.senderInstitution}</p>
+              </div>
+              <div className="flex items-center gap-3 ml-4">
+                <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${
+                  r.status === 'SIGNED' ? 'bg-emerald-50 text-emerald-700' :
+                  r.status === 'DRAFT' ? 'bg-gray-100 text-gray-600' :
+                  'bg-blue-50 text-blue-700'
+                }`}>{r.status}</span>
+                <ArrowUpRight size={14} className="text-gray-300 opacity-0 group-hover:opacity-100 transition-opacity" />
+              </div>
+            </Link>
+          ))}
         </div>
       </div>
     </div>

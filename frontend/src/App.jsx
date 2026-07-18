@@ -19,6 +19,9 @@ import TrainingsPage from './pages/admin/TrainingsPage';
 import BloodDonationsPage from './pages/admin/BloodDonationsPage';
 import MouPage from './pages/admin/MouPage';
 import UsersPage from './pages/admin/UsersPage';
+import PresensiPage from './pages/admin/PresensiPage';
+import AiAssistantPage from './pages/admin/AiAssistantPage';
+import ReceptionPage from './pages/admin/ReceptionPage';
 import DashboardPortal from './pages/dashboard/DashboardPortal';
 import CommandCenter from './pages/command/CommandCenter';
 import PublicPortal from './pages/public/PublicPortal';
@@ -53,7 +56,9 @@ export default function App() {
             <Route path="blood-donations" element={<BloodDonationsPage />} />
             <Route path="mou" element={<MouPage />} />
             <Route path="users" element={<UsersPage />} />
-          </Route>
+            <Route path="presensi" element={<PresensiPage />} />
+            <Route path="ai" element={<AiAssistantPage />} />
+            <Route path="reception" element={<ReceptionPage />} />          </Route>
           <Route path="/dashboard" element={<ProtectedRoute><DashboardPortal /></ProtectedRoute>} />
           <Route path="/command" element={<ProtectedRoute><CommandCenter /></ProtectedRoute>} />
           <Route path="/public" element={<PublicPortal />} />
