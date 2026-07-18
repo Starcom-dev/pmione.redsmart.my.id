@@ -33,7 +33,7 @@ export default function AdminDashboard() {
     <div>
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-gray-800">Dashboard</h1>
-        <p className="text-gray-500 text-sm mt-1">Selamat datang di PMI One  --  PMI DKI Jakarta</p>
+        <p className="text-gray-500 text-sm mt-1">Selamat datang di PMI One - PMI DKI Jakarta</p>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
         {cards.map((card, i) => (

@@ -93,7 +93,7 @@ export default function PublicPortal() {
       </section>
 
       <footer className="bg-red-900 text-white py-8 px-6 text-center">
-        <p className="text-sm text-red-200">PMI DKI Jakarta — Palang Merah Indonesia</p>
+        <p className="text-sm text-red-200">PMI DKI Jakarta - Palang Merah Indonesia</p>
         <p className="text-xs text-red-300 mt-1">Jl. Kramat Raya No. 47, Senen, Jakarta Pusat | (021) 3906666</p>
       </footer>
     </div>

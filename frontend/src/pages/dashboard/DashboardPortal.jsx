@@ -30,7 +30,7 @@ export default function DashboardPortal() {
     <div className="min-h-screen bg-white">
       <header className="bg-red-700 text-white px-6 py-4 flex items-center justify-between">
         <div>
-          <h1 className="text-xl font-bold">PMI One  --  Dashboard Pimpinan</h1>
+          <h1 className="text-xl font-bold">PMI One - Dashboard Pimpinan</h1>
           <p className="text-sm text-white/70">PMI DKI Jakarta</p>
         </div>
         <div className="flex items-center gap-4">
