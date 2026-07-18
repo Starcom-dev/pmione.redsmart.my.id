@@ -25,6 +25,7 @@ import { TrainingsModule } from './modules/trainings/trainings.module';
 import { BloodDonationsModule } from './modules/blood-donations/blood-donations.module';
 import { MouModule } from './modules/mou/mou.module';
 import { CommandCenterModule } from './modules/command-center/command-center.module';
+import { TteModule } from './modules/tte/tte.module';
 import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
 
 @Module({
@@ -61,6 +62,7 @@ import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
     BloodDonationsModule,
     MouModule,
     CommandCenterModule,
+    TteModule,
   ],
   providers: [{ provide: APP_GUARD, useClass: JwtAuthGuard }],
 })
