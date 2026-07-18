@@ -1,0 +1,841 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================================================
+// CORE: Auth & Organization
+// ============================================================================
+
+model User {
+  id          String    @id @default(uuid())
+  email       String    @unique
+  password    String
+  fullName    String
+  nip         String?   @unique
+  phone       String?
+  avatar      String?
+  position    String?
+  isActive    Boolean   @default(true)
+  lastLoginAt DateTime?
+  createdBy   String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  userRoles    UserRole[]
+  employee     Employee?
+  workOrders   WorkOrder[]       @relation("AssignedTechnician")
+  createdWorkOrders WorkOrder[]  @relation("WorkOrderCreator")
+  dispositions Disposition[]
+  createdLetters Letter[]        @relation("LetterCreator")
+  sentLetters    Letter[]        @relation("LetterSender")
+  situationReports SituationReport[]
+  trainingParticipants TrainingParticipant[]
+
+  @@map("users")
+}
+
+model Role {
+  id          String    @id @default(uuid())
+  name        String    @unique
+  description String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  userRoles    UserRole[]
+  permissions  RolePermission[]
+
+  @@map("roles")
+}
+
+model Permission {
+  id          String    @id @default(uuid())
+  name        String    @unique
+  description String?
+  module      String
+  createdAt   DateTime  @default(now())
+
+  rolePermissions RolePermission[]
+
+  @@map("permissions")
+}
+
+model RolePermission {
+  roleId       String
+  permissionId String
+  role         Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+  @@id([roleId, permissionId])
+  @@map("role_permissions")
+}
+
+model UserRole {
+  userId String
+  roleId String
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role   Role @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
+  @@id([userId, roleId])
+  @@map("user_roles")
+}
+
+model AuditLog {
+  id         String   @id @default(uuid())
+  userId     String?
+  action     String
+  module     String
+  entityType String
+  entityId   String?
+  oldData    Json?
+  newData    Json?
+  ipAddress  String?
+  createdAt  DateTime @default(now())
+
+  @@index([module, createdAt])
+  @@index([userId, createdAt])
+  @@map("audit_logs")
+}
+
+model Notification {
+  id        String    @id @default(uuid())
+  userId    String
+  title     String
+  message   String
+  type      String    @default("info")
+  isRead    Boolean   @default(false)
+  link      String?
+  createdAt DateTime  @default(now())
+
+  @@index([userId, isRead, createdAt])
+  @@map("notifications")
+}
+
+// ============================================================================
+// YEAR 1: E-Office — Surat, Disposisi, TTE, Arsip, Rapat
+// ============================================================================
+
+enum LetterType {
+  INCOMING
+  OUTGOING
+  INTERNAL
+}
+
+enum LetterStatus {
+  DRAFT
+  PENDING
+  APPROVED
+  REJECTED
+  SIGNED
+  ARCHIVED
+}
+
+model Letter {
+  id            String       @id @default(uuid())
+  letterNumber  String       @unique
+  subject       String
+  type          LetterType   @default(INCOMING)
+  status        LetterStatus @default(DRAFT)
+  priority      String       @default("normal")
+  senderInstitution String?
+  senderName    String?
+  recipientInstitution String?
+  body          String?
+  attachmentUrl String?
+  tags          String[]
+  signedAt      DateTime?
+  signedBy      String?
+  qrCodeUrl     String?
+  archivedAt    DateTime?
+  createdById   String
+  senderId      String?
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+
+  createdBy     User          @relation("LetterCreator", fields: [createdById], references: [id])
+  sender        User?         @relation("LetterSender", fields: [senderId], references: [id])
+  dispositions  Disposition[]
+
+  @@index([type, status])
+  @@index([createdAt])
+  @@map("letters")
+}
+
+model Disposition {
+  id          String   @id @default(uuid())
+  letterId    String
+  userId      String
+  instruction String
+  note        String?
+  isCompleted Boolean  @default(false)
+  completedAt DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  letter      Letter   @relation(fields: [letterId], references: [id], onDelete: Cascade)
+  user        User     @relation(fields: [userId], references: [id])
+
+  @@map("dispositions")
+}
+
+model DigitalSignature {
+  id          String   @id @default(uuid())
+  userId      String   @unique
+  certificate String
+  privateKey  String
+  publicKey   String
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("digital_signatures")
+}
+
+enum ArchiveCategory {
+  ADMINISTRATION
+  FINANCE
+  HR
+  OPERATIONS
+  LOGISTICS
+  TRAINING
+  LEGAL
+}
+
+model Archive {
+  id            String          @id @default(uuid())
+  title         String
+  category      ArchiveCategory
+  description   String?
+  fileUrl       String
+  fileSize      Int?
+  mimeType      String?
+  retentionUntil DateTime
+  tags          String[]
+  uploadedById  String
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+
+  @@index([category])
+  @@map("archives")
+}
+
+enum MeetingStatus {
+  SCHEDULED
+  ONGOING
+  COMPLETED
+  CANCELLED
+}
+
+model Meeting {
+  id          String        @id @default(uuid())
+  title       String
+  agenda      String?
+  location    String
+  startTime   DateTime
+  endTime     DateTime
+  status      MeetingStatus @default(SCHEDULED)
+  organizerId String
+  isOnline    Boolean       @default(false)
+  meetingLink String?
+  minutes     String?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  attendees   MeetingAttendee[]
+
+  @@index([startTime])
+  @@map("meetings")
+}
+
+model MeetingAttendee {
+  meetingId String
+  userId    String
+  isPresent Boolean @default(false)
+
+  meeting Meeting @relation(fields: [meetingId], references: [id], onDelete: Cascade)
+
+  @@id([meetingId, userId])
+  @@map("meeting_attendees")
+}
+
+// ============================================================================
+// YEAR 2: SDM & Relawan
+// ============================================================================
+
+enum EmployeeStatus {
+  ACTIVE
+  INACTIVE
+  CONTRACT
+  VOLUNTEER
+  RETIRED
+}
+
+model Employee {
+  id            String         @id @default(uuid())
+  userId        String         @unique
+  nip           String         @unique
+  nik           String?
+  fullName      String
+  birthPlace    String?
+  birthDate     DateTime?
+  gender        String?
+  religion      String?
+  bloodType     String?
+  maritalStatus String?
+  address       String?
+  city          String?
+  province      String?
+  postalCode    String?
+  phone         String?
+  email         String?
+  position      String
+  unit          String
+  status        EmployeeStatus @default(ACTIVE)
+  joinDate      DateTime
+  resignDate    DateTime?
+  photoUrl      String?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+  user        User      @relation(fields: [userId], references: [id])
+  attendances Attendance[]
+  leaves      Leave[]
+
+  @@map("employees")
+}
+
+enum AttendanceType {
+  PRESENT
+  LATE
+  ABSENT
+  PERMIT
+  SICK
+}
+
+model Attendance {
+  id         String         @id @default(uuid())
+  employeeId String
+  date       DateTime
+  checkIn    DateTime?
+  checkOut   DateTime?
+  type       AttendanceType @default(PRESENT)
+  location   String?
+  note       String?
+  createdAt  DateTime       @default(now())
+
+  employee   Employee @relation(fields: [employeeId], references: [id])
+
+  @@index([employeeId, date])
+  @@map("attendances")
+}
+
+enum LeaveType {
+  ANNUAL
+  SICK
+  MATERNITY
+  IMPORTANT_REASON
+  TRAINING
+}
+
+enum LeaveStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model Leave {
+  id         String      @id @default(uuid())
+  employeeId String
+  leaveType  LeaveType
+  startDate  DateTime
+  endDate    DateTime
+  reason     String
+  status     LeaveStatus @default(PENDING)
+  approvedBy String?
+  approvedAt DateTime?
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+
+  employee   Employee @relation(fields: [employeeId], references: [id])
+
+  @@map("leaves")
+}
+
+model Volunteer {
+  id            String   @id @default(uuid())
+  fullName      String
+  nik           String?
+  phone         String
+  email         String?
+  address       String
+  bloodType     String?
+  skills        String[]
+  certification String[]
+  status        String   @default("active")
+  qrCodeUrl     String?
+  latitude      Float?
+  longitude     Float?
+  lastMobilized DateTime?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@map("volunteers")
+}
+
+model Shift {
+  id        String   @id @default(uuid())
+  name      String
+  startTime String
+  endTime   String
+  createdAt DateTime @default(now())
+
+  @@map("shifts")
+}
+
+// ============================================================================
+// YEAR 2: Keuangan
+// ============================================================================
+
+enum BudgetStatus {
+  DRAFT
+  SUBMITTED
+  APPROVED
+  REJECTED
+}
+
+model Budget {
+  id            String       @id @default(uuid())
+  year          Int
+  unit          String
+  itemName      String
+  category      String
+  amount        Float
+  status        BudgetStatus @default(DRAFT)
+  approvedBy    String?
+  approvedAt    DateTime?
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+
+  @@index([year, unit])
+  @@map("budgets")
+}
+
+model Transaction {
+  id          String   @id @default(uuid())
+  date        DateTime
+  description String
+  category    String
+  type        String
+  amount      Float
+  balance     Float
+  reference   String?
+  proofUrl    String?
+  createdBy   String
+  createdAt   DateTime @default(now())
+
+  @@index([date, category])
+  @@map("transactions")
+}
+
+model FinancialReport {
+  id          String   @id @default(uuid())
+  title       String
+  period      String
+  year        Int
+  unit        String
+  reportType  String
+  fileUrl     String
+  status      String   @default("draft")
+  submittedAt DateTime?
+  createdAt   DateTime @default(now())
+
+  @@map("financial_reports")
+}
+
+enum DonationSource {
+  MONTHLY_FUND
+  CORPORATE
+  INDIVIDUAL
+  EVENT
+  DISASTER
+}
+
+model Donation {
+  id           String         @id @default(uuid())
+  source       DonationSource
+  donorName    String?
+  amount       Float
+  date         DateTime
+  receiptUrl   String?
+  qrCodeUrl    String?
+  campaign     String?
+  verifiedBy   String?
+  verifiedAt   DateTime?
+  createdAt    DateTime       @default(now())
+
+  @@index([date])
+  @@map("donations")
+}
+
+// ============================================================================
+// YEAR 3: Operasi Kemanusiaan — Posko, Gudang, Aset, Ambulans
+// ============================================================================
+
+enum PoskoStatus {
+  STANDBY
+  ACTIVE
+  CLOSED
+}
+
+model EmergencyPost {
+  id               String     @id @default(uuid())
+  name             String
+  location         String
+  latitude         Float
+  longitude        Float
+  status           PoskoStatus @default(STANDBY)
+  capacity         Int?
+  coordinatorId    String?
+  contactPhone     String
+  activatedAt      DateTime?
+  closedAt         DateTime?
+  createdAt        DateTime   @default(now())
+  updatedAt        DateTime   @updatedAt
+
+  situationReports SituationReport[]
+
+  @@map("emergency_posts")
+}
+
+enum SitrepStatus {
+  DRAFT
+  PUBLISHED
+}
+
+enum SitrepLevel {
+  INFO
+  WARNING
+  CRITICAL
+}
+
+model SituationReport {
+  id              String       @id @default(uuid())
+  postId          String
+  reportNumber    String       @unique
+  title           String
+  level           SitrepLevel  @default(INFO)
+  status          SitrepStatus @default(DRAFT)
+  description     String?
+  affectedPeople  Int?
+  deployedVolunteers Int?
+  resourcesNeeded String?
+  resourcesDeployed String?
+  nextAction      String?
+  createdById     String
+  publishedAt     DateTime?
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+
+  post            EmergencyPost @relation(fields: [postId], references: [id])
+  createdBy       User          @relation(fields: [createdById], references: [id])
+
+  @@index([postId, createdAt])
+  @@map("situation_reports")
+}
+
+model Warehouse {
+  id        String   @id @default(uuid())
+  name      String
+  location  String
+  latitude  Float?
+  longitude Float?
+  capacity  Float?
+  unit      String?
+  managerId String?
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  inventories Inventory[]
+
+  @@map("warehouses")
+}
+
+model Inventory {
+  id           String   @id @default(uuid())
+  warehouseId  String
+  itemName     String
+  category     String
+  quantity     Int      @default(0)
+  unit         String
+  minThreshold Int      @default(0)
+  expiredAt    DateTime?
+  updatedBy    String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  warehouse    Warehouse @relation(fields: [warehouseId], references: [id])
+
+  @@index([warehouseId])
+  @@map("inventories")
+}
+
+enum AssetCondition {
+  GOOD
+  NEEDS_REPAIR
+  DAMAGED
+  DISPOSED
+}
+
+model Asset {
+  id            String         @id @default(uuid())
+  code          String         @unique
+  name          String
+  category      String
+  acquisitionDate DateTime
+  condition     AssetCondition @default(GOOD)
+  location      String?
+  unit          String?
+  value         Float?
+  lastMaintenance DateTime?
+  notes         String?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+  @@map("assets")
+}
+
+enum FleetType {
+  AMBULANCE
+  TRUCK
+  BUS
+  CAR
+  MOTORCYCLE
+}
+
+model Fleet {
+  id            String    @id @default(uuid())
+  type          FleetType
+  plateNumber   String    @unique
+  brand         String?
+  model         String?
+  year          Int?
+  status        String    @default("available")
+  lastServiceAt DateTime?
+  nextServiceAt DateTime?
+  mileage       Int?
+  notes         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  ambulanceBookings AmbulanceBooking[]
+
+  @@map("fleets")
+}
+
+enum BookingStatus {
+  WAITING
+  DISPATCHED
+  ON_SCENE
+  TO_HOSPITAL
+  COMPLETED
+  CANCELLED
+}
+
+model AmbulanceBooking {
+  id            String        @id @default(uuid())
+  fleetId       String
+  patientName   String
+  patientPhone  String
+  pickupAddress String
+  destination   String
+  emergencyNote String?
+  status        BookingStatus @default(WAITING)
+  requestedAt   DateTime      @default(now())
+  dispatchedAt  DateTime?
+  completedAt   DateTime?
+  createdAt     DateTime      @default(now())
+
+  fleet         Fleet @relation(fields: [fleetId], references: [id])
+
+  @@map("ambulance_bookings")
+}
+
+// ============================================================================
+// YEAR 4: Building Management System
+// ============================================================================
+
+enum WorkOrderPriority {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+enum WorkOrderStatus {
+  OPEN
+  IN_PROGRESS
+  ON_HOLD
+  COMPLETED
+  CANCELLED
+}
+
+model WorkOrder {
+  id            String           @id @default(uuid())
+  title         String
+  description   String?
+  category      String
+  priority      WorkOrderPriority @default(MEDIUM)
+  status        WorkOrderStatus   @default(OPEN)
+  location      String?
+  building      String?
+  floor         String?
+  room          String?
+  assignedToId  String?
+  createdById   String
+  completedAt   DateTime?
+  notes         String?
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+
+  assignedTo    User?  @relation("AssignedTechnician", fields: [assignedToId], references: [id])
+  createdBy     User   @relation("WorkOrderCreator", fields: [createdById], references: [id])
+
+  @@index([status, priority])
+  @@map("work_orders")
+}
+
+model PreventiveMaintenance {
+  id          String   @id @default(uuid())
+  assetId     String?
+  title       String
+  intervalDays Int
+  lastDoneAt  DateTime?
+  nextDueAt   DateTime?
+  assignedTo  String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("preventive_maintenance")
+}
+
+model Utility {
+  id          String   @id @default(uuid())
+  type        String
+  building    String
+  usage       Float
+  cost        Float
+  readingDate DateTime
+  meterStart  Float?
+  meterEnd    Float?
+  createdAt   DateTime @default(now())
+
+  @@index([building, readingDate])
+  @@map("utilities")
+}
+
+model HallRental {
+  id          String   @id @default(uuid())
+  hallName    String
+  renterName  String
+  renterPhone String
+  startTime   DateTime
+  endTime     DateTime
+  purpose     String?
+  status      String   @default("confirmed")
+  paymentStatus String @default("unpaid")
+  amount      Float?
+  createdAt   DateTime @default(now())
+
+  @@map("hall_rentals")
+}
+
+// ============================================================================
+// YEAR 5: Diklat, Event, MoU
+// ============================================================================
+
+model Training {
+  id          String   @id @default(uuid())
+  title       String
+  description String?
+  startDate   DateTime
+  endDate     DateTime
+  location    String
+  instructor  String?
+  maxParticipants Int?
+  qrCertificateTemplate String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  participants TrainingParticipant[]
+
+  @@map("trainings")
+}
+
+model TrainingParticipant {
+  trainingId    String
+  userId        String
+  isCompleted   Boolean  @default(false)
+  completedAt   DateTime?
+  certificateUrl String?
+  certificateQr String?
+  createdAt     DateTime @default(now())
+
+  training      Training @relation(fields: [trainingId], references: [id], onDelete: Cascade)
+  user          User     @relation(fields: [userId], references: [id])
+
+  @@id([trainingId, userId])
+  @@map("training_participants")
+}
+
+model BloodDonationEvent {
+  id          String   @id @default(uuid())
+  title       String
+  location    String
+  startTime   DateTime
+  endTime     DateTime
+  targetDonors Int?
+  registeredDonors Int @default(0)
+  collectedUnits Int  @default(0)
+  status      String   @default("scheduled")
+  notes       String?
+  createdAt   DateTime @default(now())
+
+  @@map("blood_donation_events")
+}
+
+model Mou {
+  id            String   @id @default(uuid())
+  partnerName   String
+  title         String
+  description   String?
+  signedAt      DateTime
+  validUntil    DateTime
+  fileUrl       String?
+  status        String   @default("active")
+  renewalReminder Boolean @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@map("mous")
+}
+
+// ============================================================================
+// Dashboard & Analytics
+// ============================================================================
+
+model DashboardWidget {
+  id        String @id @default(uuid())
+  userId    String
+  widgetKey String
+  position  Int
+  config    Json?
+  isVisible Boolean @default(true)
+
+  @@unique([userId, widgetKey])
+  @@map("dashboard_widgets")
+}
