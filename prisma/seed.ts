@@ -551,12 +551,12 @@ async function main() {
   console.log(`${volunteers.length} volunteers`);
 
   // ============================================
-  // ARCHIVES â€” Rich PMI DKI Document Repository
+  // ARCHIVES â€" Rich PMI DKI Document Repository
   // ============================================
   const now = new Date();
   const archives = [
     {
-      title: 'Peraturan Gubernur DKI Jakarta No. 45 Tahun 2025 â€” Pedoman Penanggulangan Bencana Daerah',
+      title: 'Peraturan Gubernur DKI Jakarta No. 45 Tahun 2025 â€" Pedoman Penanggulangan Bencana Daerah',
       category: 'LEGAL', fileUrl: '/files/pergub-45-2025.pdf', fileSize: 2450000, mimeType: 'application/pdf',
       description: 'Peraturan Gubernur tentang pedoman teknis penanggulangan bencana di wilayah DKI Jakarta, mencakup mekanisme koordinasi BPBD-PMI, standar operasional posko darurat, dan protokol evakuasi warga.',
       tags: ['peraturan', 'kebencanaan', 'bpbd', 'sop', '2025'],
@@ -564,7 +564,7 @@ async function main() {
       uploadedById: adminUser!.id,
     },
     {
-      title: 'SOP Penanganan Bencana Banjir PMI DKI Jakarta Rev. 3 â€” 2026',
+      title: 'SOP Penanganan Bencana Banjir PMI DKI Jakarta Rev. 3 â€" 2026',
       category: 'OPERATIONS', fileUrl: '/files/sop-banjir-2026.pdf', fileSize: 1800000, mimeType: 'application/pdf',
       description: 'Standar Operasional Prosedur lengkap untuk penanganan bencana banjir: aktivasi posko, assessment kerusakan, evakuasi, pendirian tenda pengungsian, dapur umum, distribusi logistik, dan koordinasi dengan BPBD. Revisi 3 dengan penambahan protokol tanggap banjir rob.',
       tags: ['sop', 'banjir', 'posko', 'evakuasi', 'logistik', '2026'],
@@ -572,7 +572,7 @@ async function main() {
       uploadedById: adminUser!.id,
     },
     {
-      title: 'Laporan Keuangan Tahunan PMI DKI Jakarta â€” Tahun Anggaran 2025 (Audited)',
+      title: 'Laporan Keuangan Tahunan PMI DKI Jakarta â€" Tahun Anggaran 2025 (Audited)',
       category: 'FINANCE', fileUrl: '/files/laporan-keuangan-2025.pdf', fileSize: 3200000, mimeType: 'application/pdf',
       description: 'Laporan keuangan PMI DKI Jakarta yang telah diaudit oleh Kantor Akuntan Publik. Mencakup neraca, laporan arus kas, laporan perubahan ekuitas, dan catatan atas laporan keuangan untuk tahun buku yang berakhir 31 Desember 2025.',
       tags: ['keuangan', 'laporan', 'audit', '2025', 'neraca'],
@@ -580,7 +580,7 @@ async function main() {
       uploadedById: adminUser!.id,
     },
     {
-      title: 'MoU Kerjasama PMI DKI Jakarta dengan BPBD DKI â€” Kesiapsiagaan Bencana 2025-2030',
+      title: 'MoU Kerjasama PMI DKI Jakarta dengan BPBD DKI â€" Kesiapsiagaan Bencana 2025-2030',
       category: 'LEGAL', fileUrl: '/files/mou-pmi-bpbd-2025.pdf', fileSize: 1200000, mimeType: 'application/pdf',
       description: 'Memorandum of Understanding antara PMI DKI Jakarta dan BPBD DKI Jakarta tentang kerjasama kesiapsiagaan dan penanggulangan bencana untuk periode 2025-2030. Mencakup pembagian tugas, sharing resources, pelatihan bersama, dan sistem peringatan dini terintegrasi.',
       tags: ['mou', 'bpbd', 'kebencanaan', 'kerjasama', '2025'],
@@ -596,7 +596,7 @@ async function main() {
       uploadedById: adminUser!.id,
     },
     {
-      title: 'Laporan Kegiatan Donor Darah PMI DKI Jakarta â€” Semester I 2026',
+      title: 'Laporan Kegiatan Donor Darah PMI DKI Jakarta â€" Semester I 2026',
       category: 'OPERATIONS', fileUrl: '/files/laporan-donor-s1-2026.pdf', fileSize: 1500000, mimeType: 'application/pdf',
       description: 'Laporan komprehensif kegiatan donor darah di 6 wilayah DKI Jakarta selama Semester I 2026. Total donor: 12.450 kantong, rincian per golongan darah, per wilayah, per bulan, dan analisis tren partisipasi masyarakat.',
       tags: ['laporan', 'donor-darah', '2026', 'statistik'],
@@ -606,7 +606,7 @@ async function main() {
     {
       title: 'Rencana Kerja Anggaran (RKA) PMI DKI Jakarta Tahun 2026',
       category: 'FINANCE', fileUrl: '/files/rka-2026.pdf', fileSize: 2100000, mimeType: 'application/pdf',
-      description: 'Dokumen RKA lengkap tahun anggaran 2026, mencakup rencana program dan anggaran seluruh bidang: Penanggulangan Bencana (Rp 3.5B), Donor Darah (Rp 2.1B), SDM & Relawan (Rp 1.2B), Keuangan & Umum (Rp 1.8B), Teknologi Informasi â€” PMI One (Rp 2.5B).',
+      description: 'Dokumen RKA lengkap tahun anggaran 2026, mencakup rencana program dan anggaran seluruh bidang: Penanggulangan Bencana (Rp 3.5B), Donor Darah (Rp 2.1B), SDM & Relawan (Rp 1.2B), Keuangan & Umum (Rp 1.8B), Teknologi Informasi â€" PMI One (Rp 2.5B).',
       tags: ['keuangan', 'anggaran', 'rka', '2026', 'program'],
       retentionUntil: new Date('2031-12-31'),
       uploadedById: adminUser!.id,
@@ -620,7 +620,7 @@ async function main() {
       uploadedById: adminUser!.id,
     },
     {
-      title: 'Modul Pelatihan Tanggap Darurat Bencana â€” Basic Life Support & First Aid',
+      title: 'Modul Pelatihan Tanggap Darurat Bencana â€" Basic Life Support & First Aid',
       category: 'TRAINING', fileUrl: '/files/modul-bls-firstaid.pdf', fileSize: 4500000, mimeType: 'application/pdf',
       description: 'Modul pelatihan standar PMI untuk Basic Life Support (BLS) dan First Aid. Mencakup: resusitasi jantung paru (RJP), penanganan luka, patah tulang, luka bakar, evakuasi korban, triase lapangan, dan psychological first aid.',
       tags: ['pelatihan', 'first-aid', 'bls', 'modul', 'kesehatan'],
@@ -628,7 +628,7 @@ async function main() {
       uploadedById: adminUser!.id,
     },
     {
-      title: 'Laporan Audit Internal Manajemen Mutu ISO 9001:2015 â€” PMI DKI Jakarta 2025',
+      title: 'Laporan Audit Internal Manajemen Mutu ISO 9001:2015 â€" PMI DKI Jakarta 2025',
       category: 'ADMINISTRATION', fileUrl: '/files/audit-iso-2025.pdf', fileSize: 1800000, mimeType: 'application/pdf',
       description: 'Hasil audit internal sistem manajemen mutu ISO 9001:2015 PMI DKI Jakarta. Temuan: 3 minor non-conformity (closed), 5 observation (improvement). Rekomendasi: digitalisasi proses administrasi, peningkatan traceability logistik bencana.',
       tags: ['audit', 'iso', 'mutu', '2025', 'laporan'],
@@ -636,7 +636,7 @@ async function main() {
       uploadedById: adminUser!.id,
     },
     {
-      title: 'Database Relawan PMI DKI Jakarta per Desember 2025 â€” Profil & Kompetensi',
+      title: 'Database Relawan PMI DKI Jakarta per Desember 2025 â€" Profil & Kompetensi',
       category: 'HR', fileUrl: '/files/database-relawan-2025.pdf', fileSize: 3200000, mimeType: 'application/pdf',
       description: 'Database lengkap 850 relawan aktif PMI DKI Jakarta: distribusi per wilayah, per keahlian (PPGD 45%, Logistik 20%, Dapur Umum 15%, Komunikasi 10%, Evakuasi Air 10%), tingkat sertifikasi, riwayat penugasan, dan availability score.',
       tags: ['relawan', 'database', 'simpeg', 'kompetensi', '2025'],
@@ -644,7 +644,7 @@ async function main() {
       uploadedById: adminUser!.id,
     },
     {
-      title: 'Keputusan Kepala PMI DKI No. 12/KPTS/PMI-DKI/I/2026 â€” Penetapan Tim Teknologi Informasi',
+      title: 'Keputusan Kepala PMI DKI No. 12/KPTS/PMI-DKI/I/2026 â€" Penetapan Tim Teknologi Informasi',
       category: 'ADMINISTRATION', fileUrl: '/files/sk-tim-ti-2026.pdf', fileSize: 600000, mimeType: 'application/pdf',
       description: 'SK pembentukan Tim Teknologi Informasi PMI DKI Jakarta dengan tugas: pengembangan platform PMI One, pemeliharaan infrastruktur IT, keamanan data, dan pelatihan digital untuk seluruh pegawai. Tim terdiri dari 5 orang dipimpin oleh Kabid Keuangan.',
       tags: ['sk', 'teknologi', 'pmi-one', '2026', 'organisasi'],
@@ -652,7 +652,7 @@ async function main() {
       uploadedById: adminUser!.id,
     },
     {
-      title: 'Kontrak Pengadaan 3 Unit Ambulans Transport Toyota HiAce â€” 2024',
+      title: 'Kontrak Pengadaan 3 Unit Ambulans Transport Toyota HiAce â€" 2024',
       category: 'LOGISTICS', fileUrl: '/files/kontrak-ambulans-2024.pdf', fileSize: 900000, mimeType: 'application/pdf',
       description: 'Dokumen kontrak pengadaan 3 unit ambulans transport Toyota HiAce Commuter dari PT Astra International-TSO. Nilai kontrak: Rp 1.950.000.000. Termasuk spesifikasi kendaraan, peralatan medis onboard, jadwal pengiriman, dan garansi 3 tahun.',
       tags: ['pengadaan', 'ambulans', 'kontrak', '2024'],
@@ -660,7 +660,7 @@ async function main() {
       uploadedById: adminUser!.id,
     },
     {
-      title: 'Standar Nasional Indonesia (SNI) 8799:2019 â€” Penyelenggaraan Unit Donor Darah PMI',
+      title: 'Standar Nasional Indonesia (SNI) 8799:2019 â€" Penyelenggaraan Unit Donor Darah PMI',
       category: 'LEGAL', fileUrl: '/files/sni-udd-2019.pdf', fileSize: 1200000, mimeType: 'application/pdf',
       description: 'Dokumen SNI tentang standar penyelenggaraan Unit Donor Darah oleh PMI: persyaratan bangunan, peralatan, SDM, prosedur skrining donor, pengolahan darah, penyimpanan, distribusi, quality control, dan sistem informasi manajemen UDD.',
       tags: ['sni', 'donor-darah', 'standar', 'udd', 'regulasi'],
@@ -668,7 +668,7 @@ async function main() {
       uploadedById: adminUser!.id,
     },
     {
-      title: 'Laporan Evaluasi Pasca Bencana Banjir Jakarta â€” Januari 2026',
+      title: 'Laporan Evaluasi Pasca Bencana Banjir Jakarta â€" Januari 2026',
       category: 'OPERATIONS', fileUrl: '/files/evaluasi-banjir-januari-2026.pdf', fileSize: 2800000, mimeType: 'application/pdf',
       description: 'Laporan evaluasi menyeluruh pasca bencana banjir Jakarta 15-18 Januari 2026: kronologi kejadian, respon PMI (waktu aktivasi: 45 menit), sumber daya dikerahkan (80 relawan, 5 posko, 3 dapur umum, 10 ambulans), jumlah warga dilayani (3.200 jiwa), lessons learned, dan rekomendasi perbaikan.',
       tags: ['laporan', 'banjir', 'evaluasi', '2026', 'lesson-learned'],
@@ -676,7 +676,7 @@ async function main() {
       uploadedById: adminUser!.id,
     },
     {
-      title: 'Sertifikat ISO 9001:2015 â€” Sistem Manajemen Mutu PMI DKI Jakarta (2024-2027)',
+      title: 'Sertifikat ISO 9001:2015 â€" Sistem Manajemen Mutu PMI DKI Jakarta (2024-2027)',
       category: 'ADMINISTRATION', fileUrl: '/files/sertifikat-iso-2024.pdf', fileSize: 400000, mimeType: 'application/pdf',
       description: 'Sertifikat ISO 9001:2015 untuk Sistem Manajemen Mutu PMI Provinsi DKI Jakarta, diterbitkan oleh SGS Indonesia, berlaku 15 Maret 2024 s/d 14 Maret 2027. Scope: Pelayanan Kemanusiaan, Donor Darah, dan Penanggulangan Bencana.',
       tags: ['sertifikat', 'iso', 'mutu', '2024'],
@@ -684,7 +684,7 @@ async function main() {
       uploadedById: adminUser!.id,
     },
     {
-      title: 'Rencana Strategis PMI DKI Jakarta 2025-2029 â€” Roadmap Transformasi Digital',
+      title: 'Rencana Strategis PMI DKI Jakarta 2025-2029 â€" Roadmap Transformasi Digital',
       category: 'ADMINISTRATION', fileUrl: '/files/renstra-2025-2029.pdf', fileSize: 3500000, mimeType: 'application/pdf',
       description: 'Dokumen Renstra lengkap 2025-2029: Visi "PMI DKI sebagai organisasi kemanusiaan terdepan berbasis digital di Indonesia", 4 pilar strategis (Layanan Kemanusiaan Digital, SDM Profesional, Kemandirian Finansial, Tata Kelola Modern), 12 program prioritas termasuk PMI One.',
       tags: ['renstra', 'strategis', 'digital', '2025', 'roadmap'],
@@ -692,7 +692,7 @@ async function main() {
       uploadedById: adminUser!.id,
     },
     {
-      title: 'Surat Edaran No. 03/SE/PMI-DKI/VI/2026 â€” Kewajiban Arsip Digital untuk Seluruh Bidang',
+      title: 'Surat Edaran No. 03/SE/PMI-DKI/VI/2026 â€" Kewajiban Arsip Digital untuk Seluruh Bidang',
       category: 'ADMINISTRATION', fileUrl: '/files/edaran-arsip-digital-2026.pdf', fileSize: 300000, mimeType: 'application/pdf',
       description: 'Edaran dari Sekretaris PMI DKI yang mewajibkan seluruh bidang dan unit untuk mengunggah dokumen penting ke sistem arsip digital PMI One paling lambat 31 Juli 2026. Mencakup ketentuan format file (PDF/A), standar penamaan, metadata wajib, dan kategori arsip.',
       tags: ['edaran', 'arsip', 'digital', '2026'],
@@ -700,7 +700,7 @@ async function main() {
       uploadedById: adminUser!.id,
     },
     {
-      title: 'Laporan Program Bulan Dana PMI DKI Jakarta â€” 2025',
+      title: 'Laporan Program Bulan Dana PMI DKI Jakarta â€" 2025',
       category: 'FINANCE', fileUrl: '/files/laporan-bulan-dana-2025.pdf', fileSize: 1600000, mimeType: 'application/pdf',
       description: 'Laporan pelaksanaan dan hasil Bulan Dana PMI 2025: target Rp 2 Miliar, realisasi Rp 2,1 Miliar (105%). Rincian per sumber: corporate 65%, individu 25%, event 10%. Penggunaan dana: operasional 60%, program kemanusiaan 30%, administrasi 10%.',
       tags: ['laporan', 'bulan-dana', 'donasi', '2025', 'keuangan'],
@@ -710,13 +710,13 @@ async function main() {
     {
       title: 'Panduan Teknis Sistem Informasi Manajemen Logistik Bencana (SIMLOG)',
       category: 'LOGISTICS', fileUrl: '/files/panduan-simlog.pdf', fileSize: 2200000, mimeType: 'application/pdf',
-      description: 'Buku panduan penggunaan SIMLOG â€” sistem pencatatan logistik bencana digital. Mencakup: katalog item standar (200+ item), sistem FIFO, barcode/QR tracking, threshold otomatis, pelaporan real-time, integrasi dengan PMI One, dan disaster dashboard.',
+      description: 'Buku panduan penggunaan SIMLOG â€" sistem pencatatan logistik bencana digital. Mencakup: katalog item standar (200+ item), sistem FIFO, barcode/QR tracking, threshold otomatis, pelaporan real-time, integrasi dengan PMI One, dan disaster dashboard.',
       tags: ['logistik', 'simlog', 'panduan', 'teknologi', 'sop'],
       retentionUntil: new Date('2031-06-30'),
       uploadedById: adminUser!.id,
     },
     {
-      title: 'Nota Kesepahaman PMI DKI dengan Dinas Kesehatan â€” Program Vaksinasi & Donor Darah 2025-2028',
+      title: 'Nota Kesepahaman PMI DKI dengan Dinas Kesehatan â€" Program Vaksinasi & Donor Darah 2025-2028',
       category: 'LEGAL', fileUrl: '/files/mou-dinkes-2025.pdf', fileSize: 800000, mimeType: 'application/pdf',
       description: 'MoU antara PMI DKI Jakarta dan Dinas Kesehatan Provinsi DKI Jakarta tentang kerjasama program vaksinasi massal dan donor darah terintegrasi. PMI menyediakan ambulans, tenaga medis, dan UDD; Dinkes menyediakan vaksin dan tenaga vaksinator.',
       tags: ['mou', 'dinkes', 'kesehatan', 'vaksinasi', 'donor-darah', '2025'],
@@ -724,7 +724,7 @@ async function main() {
       uploadedById: adminUser!.id,
     },
     {
-      title: 'Sertifikat Akreditasi Unit Donor Darah PMI DKI Jakarta â€” Grade A (2026-2029)',
+      title: 'Sertifikat Akreditasi Unit Donor Darah PMI DKI Jakarta â€" Grade A (2026-2029)',
       category: 'ADMINISTRATION', fileUrl: '/files/akreditasi-udd-2026.pdf', fileSize: 500000, mimeType: 'application/pdf',
       description: 'Sertifikat akreditasi UDD PMI DKI Jakarta dengan predikat Grade A dari Komite Akreditasi Nasional, berlaku 1 Februari 2026 s/d 31 Januari 2029. Grade A menunjukkan kepatuhan terhadap seluruh standar mutu, keamanan, dan profesionalisme pengelolaan darah.',
       tags: ['sertifikat', 'akreditasi', 'udd', 'donor-darah', '2026'],
@@ -740,7 +740,7 @@ async function main() {
       uploadedById: adminUser!.id,
     },
     {
-      title: 'Data Statistik Bencana DKI Jakarta 2020-2025 â€” Analisis Tren & Prediksi',
+      title: 'Data Statistik Bencana DKI Jakarta 2020-2025 â€" Analisis Tren & Prediksi',
       category: 'OPERATIONS', fileUrl: '/files/statistik-bencana-2020-2025.pdf', fileSize: 2800000, mimeType: 'application/pdf',
       description: 'Kompilasi data dan analisis statistik bencana di DKI Jakarta periode 2020-2025: banjir (65% kejadian), kebakaran (20%), gempa (5%), angin puting beliung (5%), tanah longsor (3%), lainnya (2%). Tren: peningkatan frekuensi banjir rob +45% sejak 2023. Prediksi 2026-2027 menggunakan model ARIMA.',
       tags: ['statistik', 'bencana', 'analisis', 'prediksi', 'data', 'penelitian'],
