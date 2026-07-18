@@ -3,6 +3,7 @@ import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { ArchivesService } from './archives.service';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 import { Roles } from '../../common/decorators/roles.decorator';
+import { Public } from '../../common/decorators/public.decorator';
 
 @ApiTags('Archives')
 @ApiBearerAuth()
@@ -12,8 +13,37 @@ export class ArchivesController {
   constructor(private service: ArchivesService) {}
 
   @Get()
-  async findAll(@Query('page') page = 1, @Query('limit') limit = 10) {
-    return { success: true, ...(await this.service.findAll(+page, +limit)) };
+  async findAll(
+    @Query('page') page = 1, @Query('limit') limit = 10,
+    @Query('search') search?: string, @Query('category') category?: string,
+  ) {
+    return { success: true, ...(await this.service.findAll(+page, +limit, search, category)) };
+  }
+
+  @Get('stats')
+  async stats() {
+    return { success: true, data: await this.service.getStats() };
+  }
+
+  @Get('tags')
+  async tags() {
+    return { success: true, data: await this.service.getTagCloud() };
+  }
+
+  @Get('timeline')
+  async timeline(@Query('year') year?: string) {
+    return { success: true, data: await this.service.getTimeline(year ? +year : undefined) };
+  }
+
+  @Get('ai-search')
+  async aiSearch(@Query('q') q: string, @Query('page') page = 1, @Query('limit') limit = 10) {
+    if (!q) return { success: true, data: [] };
+    return { success: true, ...(await this.service.aiSearch(q, +page, +limit)) };
+  }
+
+  @Get('ai-suggest')
+  async aiSuggest(@Query('q') q: string) {
+    return { success: true, data: await this.service.aiSuggest(q || '') };
   }
 
   @Get(':id')
