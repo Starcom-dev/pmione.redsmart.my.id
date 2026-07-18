@@ -903,6 +903,24 @@ model ApprovalTemplate {
 // Dashboard & Analytics
 // ============================================================================
 
+model Visitor {
+  id            String   @id @default(uuid())
+  visitorName   String
+  visitorPhone  String
+  purpose       String
+  hostName      String
+  vehicleNumber String?
+  checkInTime   DateTime @default(now())
+  checkOutTime  DateTime?
+  status        String   @default("CHECKED_IN")
+  qrCode        String?
+  notes         String?
+  createdAt     DateTime @default(now())
+
+  @@index([checkInTime])
+  @@map("visitors")
+}
+
 model DashboardWidget {
   id        String @id @default(uuid())
   userId    String

@@ -29,6 +29,7 @@ import { TteModule } from './modules/tte/tte.module';
 import { ApprovalsModule } from './modules/approvals/approvals.module';
 import { PresensiModule } from './modules/presensi/presensi.module';
 import { AiAssistantModule } from './modules/ai-assistant/ai-assistant.module';
+import { ReceptionModule } from './modules/reception/reception.module';
 import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
 
 @Module({
@@ -69,6 +70,7 @@ import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
     ApprovalsModule,
     PresensiModule,
     AiAssistantModule,
+    ReceptionModule,
   ],
   providers: [{ provide: APP_GUARD, useClass: JwtAuthGuard }],
 })
