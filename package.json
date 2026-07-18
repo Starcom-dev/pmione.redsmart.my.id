@@ -1,7 +1,7 @@
 {
   "name": "pmione-backend",
   "version": "1.0.0",
-  "description": "PMI One — Platform Cerdas Berbasis AI untuk Operasional Kemanusiaan",
+  "description": "PMI One  --  Platform Cerdas Berbasis AI untuk Operasional Kemanusiaan",
   "private": true,
   "scripts": {
     "build": "nest build",

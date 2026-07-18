@@ -1,4 +1,4 @@
-﻿import { Injectable, NotFoundException } from '@nestjs/common';
+ import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 
 @Injectable()
@@ -43,7 +43,7 @@ export class ArchivesService {
   }
 
   async aiSearch(query: string, page = 1, limit = 10) {
-    // Semantic search — expand keywords with synonyms + fuzzy matching
+    // Semantic search  --  expand keywords with synonyms + fuzzy matching
     const keywords = this.extractKeywords(query);
     const where: any = {
       OR: [

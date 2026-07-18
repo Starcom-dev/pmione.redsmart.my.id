@@ -1,4 +1,4 @@
-﻿import { Module } from '@nestjs/common';
+ import { Module } from '@nestjs/common';
 import { MouService } from './mou.service';
 import { MouController } from './mou.controller';
 

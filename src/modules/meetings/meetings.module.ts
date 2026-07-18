@@ -1,4 +1,4 @@
-﻿import { Module } from '@nestjs/common';
+ import { Module } from '@nestjs/common';
 import { MeetingsService } from './meetings.service';
 import { MeetingsController } from './meetings.controller';
 
