@@ -28,6 +28,7 @@ import { CommandCenterModule } from './modules/command-center/command-center.mod
 import { TteModule } from './modules/tte/tte.module';
 import { ApprovalsModule } from './modules/approvals/approvals.module';
 import { PresensiModule } from './modules/presensi/presensi.module';
+import { AiAssistantModule } from './modules/ai-assistant/ai-assistant.module';
 import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
 
 @Module({
@@ -67,6 +68,7 @@ import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
     TteModule,
     ApprovalsModule,
     PresensiModule,
+    AiAssistantModule,
   ],
   providers: [{ provide: APP_GUARD, useClass: JwtAuthGuard }],
 })
